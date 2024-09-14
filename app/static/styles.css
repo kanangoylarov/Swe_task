@@ -1,0 +1,21 @@
+/* app/static/styles.css */
+
+body {
+    font-family: Arial, sans-serif;
+    margin: 20px;
+}
+
+nav ul {
+    list-style: none;
+    padding: 0;
+}
+
+nav ul li {
+    display: inline;
+    margin-right: 10px;
+}
+
+.container {
+    margin: auto;
+    margin-top: 20px;
+}

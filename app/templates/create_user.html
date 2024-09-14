@@ -1,0 +1,31 @@
+<!-- app/templates/create_user.html -->
+
+{% extends 'base.html' %}
+
+{% block content %}
+<h1>Create New User</h1>
+
+<form method="POST" action="/admin/create_user">
+    <label for="username">Username</label>
+    <input type="text" id="username" name="username" required>
+
+    <label for="email">Email</label>
+    <input type="email" id="email" name="email" required>
+
+    <label for="password">Password</label>
+    <input type="password" id="password" name="password" required>
+
+    <label for="role">Role</label>
+    <select id="role" name="role" required>
+        <option value="user">User</option>
+        <option value="admin">Admin</option>
+    </select>
+
+    <button type="submit">Create User</button>
+</form>
+
+{% for message, category in get_flashed_messages(with_categories=True) %}
+    <div class="flash {{ category }}">{{ message }}</div>
+{% endfor %}
+
+{% endblock %}

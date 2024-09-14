@@ -1,0 +1,89 @@
+<!-- app/templates/admin_events.html -->
+
+{% extends 'base.html' %} {% block content %}
+<h1 class="text-4xl font-bold text-center my-16">Manage Events</h1>
+<!-- {% for message, category in get_flashed_messages(with_categories=True) %}
+<div class="flash {{ category }}">{{ message }} {{ category }}</div>
+{% endfor %} -->
+
+
+<div class="relative overflow-x-auto shadow-md sm:rounded-lg my-20">
+  <table
+    class="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400"
+  >
+    <thead
+      class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400"
+    >
+      <tr>
+        <th scope="col" class="px-6 py-3">Title</th>
+        <th scope="col" class="px-6 py-3">Author</th>
+        <th scope="col" class="px-6 py-3">Start</th>
+        <th scope="col" class="px-6 py-3">End</th>
+        <th scope="col" class="px-6 py-3">Location</th>
+        <th scope="col" class="px-6 py-3">Image</th>
+
+        <th scope="col" class="px-6 py-3">
+          <span class="sr-only">Actions</span>
+        </th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for event in events %}
+      <tr
+        class="bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600"
+      >
+        <th
+          scope="row"
+          class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white"
+        >
+          {{ event.title }}
+        </th>
+        <td class="px-6 py-4">{{ event.author }}</td>
+        <td class="px-6 py-4">{{ event.start }}</td>
+        <td class="px-6 py-4">{{ event.end }}</td>
+        <td class="px-6 py-4">{{ event.location }}</td>
+
+        <td class="px-6 py-4">
+          {% if event.image_path %}
+          <img
+            src="{{ url_for('static', filename='event_images/' + event.image_path) }}"
+            alt="{{ event.title }}"
+            width="100"
+            class="w-16 md:w-32 max-w-full max-h-full"
+          />
+          {% else %} No image attached {% endif %}
+        </td>
+
+        <td class="px-6 py-4 text-right">
+            <div class="flex flex-col space-y-2 items-end">
+                <form action="/admin/events/{{ event.id }}/attach_image" method="POST" enctype="multipart/form-data"
+                    class="flex flex-col items-end space-y-2">
+                    <label for="image" class="block text-sm font-medium text-gray-700 dark:text-gray-300">Attach/Modify
+                        Image</label>
+                    <input type="file" name="image" class="block w-full text-sm text-gray-500 file:mr-4 file:py-2 file:px-4
+                        file:rounded-full file:border-0 file:text-sm file:font-semibold file:bg-violet-50 file:text-violet-700
+                        hover:file:bg-violet-100" />
+                    <button type="submit"
+                        class="inline-flex items-center px-3 py-2 border border-transparent text-sm leading-4 font-medium rounded-md
+                        text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2
+                        focus:ring-blue-500">
+                        Upload
+                    </button>
+                </form>
+                <form action="/admin/events/{{ event.id }}/remove_image" method="POST">
+                    <button type="submit" class="inline-flex items-center px-3 py-2 border border-transparent text-sm leading-4 font-medium rounded-md
+                        text-white bg-red-600 hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-offset-2
+                        focus:ring-red-500"
+                        {% if not event.image_path %}disabled class="bg-gray-400 cursor-not-allowed"{% endif %}>
+                        Remove Image
+                    </button>
+                </form>
+            </div>
+        </td>
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+</div>
+
+{% endblock %}
