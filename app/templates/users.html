@@ -71,9 +71,7 @@
     </button>
   </form>
 
-  {% for message, category in get_flashed_messages(with_categories=True) %}
-  <div class="flash {{ category }}">{{ message }} {{ category }}</div>
-  {% endfor %}
+
 </div>
 
 <div class="mx-auto mt-5">
