@@ -85,16 +85,27 @@ def create_user_submit():
         return redirect(url_for('event_routes.events_page'))
 
     # Get form data
-    username = request.form['username']
-    email = request.form['email']
-    password = request.form['password']
-    role = request.form['role']
+    username = request.form.get('username')
+    email = request.form.get('email')
+    password = request.form.get('password')
+    role = request.form.get('role')
     
-    # Call the service layer to create the user
-    user = create_user(username=username, email=email, password=password, role=role)
-    
-    # Redirect based on success/failure
-    if user:
-        return redirect(url_for('user_routes.users_page'))  # Redirect to user list page
-    else:
+    # Ensure that all fields are provided
+    if not username or not email or not password or not role:
+        flash('All fields are required.', 'danger')
         return redirect(url_for('user_routes.users_page'))  # Reload the form with error
+
+    # Call the service layer to create the user
+    try:
+        user = create_user(username=username, email=email, password=password, role=role)
+    except Exception as e:
+        flash(f'Error creating user: {str(e)}', 'danger')
+        return redirect(url_for('user_routes.users_page'))
+
+    # Redirect based on success
+    if user:
+        flash('User created successfully!', 'success')
+        return redirect(url_for('user_routes.users_page'))
+    else:
+        flash('Error creating user.', 'danger')
+        return redirect(url_for('user_routes.users_page'))
